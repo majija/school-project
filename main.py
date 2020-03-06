@@ -1,5 +1,5 @@
 import telebot
-bot = telebot.TeleBot('1126985690:AAHWxfz1vj20NO2eoLN-093L0Pd7bc8xEu0')
+bot = telebot.TeleBot()  # Сюда нужно вставлять токен каждый раз
 
 
 @bot.message_handler(commands=['start'])
