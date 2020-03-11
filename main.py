@@ -9,7 +9,7 @@ cursor = conn.cursor()
 def start_message(message):
     bot.send_message(message.chat.id, 'Привет, познакомимся?')
 
-"""
+
 @bot.message_handler(commands=['create_profile'])
 def create_user(message):
     bot.send_message(message.chat.id, 'Привет, познакомимся?')
@@ -19,7 +19,7 @@ def create_user(message):
     cursor.execute("""INSERT INTO table1  (a, b, c)
                    VALUES
                    """)
-"""
+
 
 
 bot.polling()
