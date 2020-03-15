@@ -1,6 +1,11 @@
+import numpy as np
+import pandas as pd
+import sqlite3
+import settings
+
 import telebot
-import sqlite3, pandas as pd, numpy as np
-bot = telebot.TeleBot('1126985690:AAHWxfz1vj20NO2eoLN-093L0Pd7bc8xEu0')  # Сюда нужно вставлять токен каждый раз
+
+bot = telebot.TeleBot(settings.token)  # Сюда нужно вставлять токен каждый раз
 conn = sqlite3.connect('database.db')
 cursor = conn.cursor()
 database = pd.read_sql("""SELECT * FROM users""", conn)
@@ -17,16 +22,19 @@ def create_user(message):
     cursor = conn.cursor()
     username = message.from_user.username
     rating = 5.0
-    id = 1
-    string_to_add = (str(id) + ', ' + str(username) + " , '" + str(rating) + "'")
-    print(string_to_add)
-    if len(database.nickname.loc[database.nickname == username]) == 0:
+    if len(database.nickname.loc[database.nickname == username]) != 0:
+        bot.send_message(message.chat.id, 'Вы уже зарегестрированы!')
+    else:
+        id = len(database) + 1
+        string_to_add = (str(id) + ', ' + str(username) + " , '" + str(rating) + "'")
+        print(string_to_add)
         cursor.execute("""INSERT INTO users
-                      VALUES ('{}', '{}', {})""".format(id, username, rating)
+                             VALUES ('{}', '{}', {})""".format(id, username, rating)
                        )
         conn.commit()
+        data_size = len(database)
+        database.loc[data_size] = [id, username, rating]
         bot.send_message(message.chat.id, 'Я вас зарегистрировал!')
-    else:
-        bot.send_message(message.chat.id, 'Вы уже зарегестрированы!')
+
 
 bot.polling()
