@@ -2,6 +2,7 @@ import numpy as np
 import pandas as pd
 import sqlite3
 import settings
+import telebot
 
 bot = telebot.TeleBot(settings.token)  # Сюда нужно вставлять токен каждый раз
 conn = sqlite3.connect('database.db')
